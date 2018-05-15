@@ -6,6 +6,10 @@
       /*t*/
       (/*t*/)/*t*/
       {
+        return 'str\'str' + 'str
+            str2\'str2
+            function Fake1() {}
+            str3'
       }
     //function Fake() {}
 ?>
