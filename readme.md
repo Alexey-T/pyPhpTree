@@ -4,16 +4,16 @@ Function
 
     def get_headers(lines)
   
-finds all classes/functions in PHP source code, given py "lines" list, and gives list of tuples:
+finds all classes/functions in PHP source code ("lines" list), and gives list of tuples:
 
-    (line_index, header_level, header_text, kind)
+    (line_index, level, caption, kind)
   
 Fields:
 
 - line_index: 0-based line index in the "lines" list.
-- header_level: 0-based level of header. each item of level K+1 is sub-item of (nearest higher) item of level K.
-- header_text: caption of header, ie name of a class or function.
-- kind: kind of header item: "c" for class, "f" for function.
+- level: 0-based level of item. each item of level K+1 is nested into (nearest higher) item of level K.
+- caption: name of class/function.
+- kind: kind of item: "c" for class, "f" for function.
 
 # About
 
