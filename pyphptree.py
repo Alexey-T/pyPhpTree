@@ -43,10 +43,10 @@ def get_token(s, pos):
     return (r+1, ch)
 
 
-def get_headers(lines):
+def get_headers(filename, lines):
     '''
     gets list of tuples for classes/funcs:
-    (line_index, header_level, header_text, kind)
+    (line_index, level, caption, kind)
     '''
 
     in_php = False

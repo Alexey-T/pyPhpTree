@@ -9,7 +9,7 @@ def test_file(fn):
     with open(fn, encoding='utf8') as f:
         lines = f.read().splitlines()
         print('\nHeaders in: '+fn)
-        for item in pyphptree.get_headers(lines):
+        for item in pyphptree.get_headers(fn, lines):
             print('  ', item)
 
 test_file(fn1)
