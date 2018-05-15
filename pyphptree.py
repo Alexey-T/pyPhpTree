@@ -35,6 +35,7 @@ def get_token(s, pos):
     if r+1<len(s):
         sub = s[r:r+2]
         if sub in ('<?', '?>', '/*', '*/', '//', '==') \
+            # support backslash escape in strings, must not be bad outside of str
             or sub.startswith('\\'):
             return (r+2, sub)
 
