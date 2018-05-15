@@ -1,16 +1,20 @@
+#
 # pyPhpTree
 # Author: Alexey Torgashin, UVviewsoft.com
 # License: MPL 2.0
+#
 
 import string
 CHARS = string.ascii_letters + string.digits + '_$'
 
+
 def is_wordchar(ch):
     return ch in CHARS
 
+
 def get_token(s, pos):
     '''
-    gets tuple (pos_after_token, str_token)
+    gets token info (pos_after_token, str_token)
     '''
     r = pos
     if r>=len(s):
@@ -36,16 +40,24 @@ def get_token(s, pos):
     
         
 def get_headers(lines):
+    '''
+    gets list of tuples for classes/funcs:
+    (line_index, header_level, header_text, kind)
+    '''
     
     in_php = False
     in_cmt = False
     level = 0
 
-    for index, s in enumerate(lines):
+    _kind = None
+    _id = None
+
+    for line_index, s in enumerate(lines):
         pos = 0
         while pos<len(s):
             pos, token = get_token(s, pos)
 
+            # skip spaces/tabs/eols
             if token in ('', ' '):
                 continue
                 
@@ -75,8 +87,22 @@ def get_headers(lines):
                 continue
             if token=='}':
                 level -= 1
-                if level<0:
-                    level=0
+                if level < 0:
+                    level = 0
                 continue
+
+            if token=='class':
+                _kind = 'c'
+                continue
+            if token=='function':
+                _kind = 'f'
+                continue
+                
+            if _kind:
+                _id = token
+                yield line_index, level, _id, _kind
+            
+            _kind = None
+            _id = None 
                             
-            print('    '*level+' (level='+str(level)+') token "'+token+'"')
+            print('    '*level+' (l='+str(level)+') token "'+token+'"')
