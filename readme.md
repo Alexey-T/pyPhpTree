@@ -2,13 +2,11 @@
 
 Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? ... ?>` tags (any count of fragments in one file), and only outside of `/* ... */` and `// ...` comments.
 
-Function
-
-    def get_headers(lines)
-  
-finds all classes/functions, in given "lines" list, and gets list of tuples:
+Function `get_headers(lines)` finds all classes/functions, in given "lines" list, and gets tuples:
 
     (line_index, level, caption, kind)
+    
+It's generator (yield), so to get list of tuples, use `list(get_headers(..))`.
   
 Fields:
 
