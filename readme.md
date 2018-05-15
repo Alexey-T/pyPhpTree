@@ -1,6 +1,8 @@
 # pyPhpTree module
 
-Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? ... ?>` tags (any count of fragments in one file), and outside of `/* ... */` and `// ...` comments, and outside of `'...'` strings (multi-line strings supported, escape backslash should work).
+Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? ... ?>` tags (any count of fragments in one file), and outside of `/* ... */` and `// ...` comments, and outside of single/double-quoted strings (multi-line strings supported, escape backslash supported).
+
+# API
 
 Function `get_headers(filename, lines)` finds all classes/functions, in given "lines" list, and gets tuples:
 
