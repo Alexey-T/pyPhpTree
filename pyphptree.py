@@ -32,7 +32,7 @@ def get_token(s, pos):
     # special symbols?        
     if r+1<len(s):        
         sub = s[r:r+2]
-        if sub in ('/*', '*/', '<?', '?>', '=='):
+        if sub in ('<?', '?>', '/*', '*/', '//', '=='):
             return (r+2, sub)
           
     # some unknown char
@@ -61,7 +61,7 @@ def get_headers(lines):
             if token in ('', ' '):
                 continue
                 
-            # comments must be ignored out of <? ?>
+            # ignore non-PHP parts first
             if token=='<?':
                 in_php = True
                 continue
@@ -71,7 +71,10 @@ def get_headers(lines):
             if not in_php:
                 continue
             
-            # now we're inside <? ?>    
+            # now consider comments
+            if token=='//':
+                # goto next line
+                break
             if token=='/*':
                 in_cmt = True
                 continue
