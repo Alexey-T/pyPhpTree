@@ -1,5 +1,7 @@
 # pyPhpTree module
 
+Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? .. ?>` tags (any count of fragments in one file), and only outside of `/* .. */` comments.
+
 Function
 
     def get_headers(lines)
