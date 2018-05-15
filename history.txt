@@ -1,3 +1,7 @@
 
+2018.05.16
+* changed result to dicts
+* added to result field "name_x"
+
 2018.05.15
 initial version
