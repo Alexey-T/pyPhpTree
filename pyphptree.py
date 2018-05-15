@@ -41,27 +41,42 @@ def get_headers(lines):
     in_cmt = False
     level = 0
 
-    for index, line in enumerate(lines):
-        s = line
+    for index, s in enumerate(lines):
         pos = 0
         while pos<len(s):
             pos, token = get_token(s, pos)
+
             if token in ('', ' '):
                 continue
-            if token=='/*':
-                in_cmt = True
-                continue
-            if token=='*/':
-                in_cmt = False
-                continue
+                
+            # comments must be ignored out of <? ?>
             if token=='<?':
                 in_php = True
                 continue
             if token=='?>':
                 in_php = False
                 continue
-            if in_cmt:
-                continue
             if not in_php:
                 continue
-            print('token "'+token+'"')
+            
+            # now we're inside <? ?>    
+            if token=='/*':
+                in_cmt = True
+                continue
+            if token=='*/':
+                in_cmt = False
+                continue
+            if in_cmt:
+                continue
+
+            # now we have OK php token
+            if token=='{':
+                level += 1
+                continue
+            if token=='}':
+                level -= 1
+                if level<0:
+                    level=0
+                continue
+                            
+            print('    '*level+' (level='+str(level)+') token "'+token+'"')
