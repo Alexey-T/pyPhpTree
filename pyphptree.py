@@ -28,22 +28,19 @@ def get_token(s, pos):
     ch = s[r]
     # space?
     if ch in ' \t':
-        return (r+1, ch)
+        return (r+1, ' ')
     # word char?
     if is_wordchar(ch):
         while r<len(s) and is_wordchar(s[r]):
             r += 1
         return (r, s[pos:r])
-    # comment edge?
-    if ch=='/' and r+1<len(s) and s[r+1]=='*':
-        return (r+2, '/*')
-    if ch=='*' and r+1<len(s) and s[r+1]=='/':
-        return (r+2, '*/')
-    # php edge?
-    if ch=='<' and r+1<len(s) and s[r+1]=='?':
-        return (r+2, '<?')
-    if ch=='?' and r+1<len(s) and s[r+1]=='>':
-        return (r+2, '?>')
+
+    # special symbols?        
+    if r+1<len(s):        
+        sub = s[r:r+2]
+        if sub in ('/*', '*/', '<?', '?>', '=='):
+            return (r+2, sub)
+          
     # some unknown char
     return (r+1, ch)
     
@@ -59,6 +56,7 @@ def get_headers(lines):
         pos = 0
         while pos<len(s):
             pos, token = get_token(s, pos)
-            print('token', token)
+            if token==' ': continue
+            print('token "'+token+'"')
             
         
