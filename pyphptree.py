@@ -48,9 +48,7 @@ def get_headers(lines):
     in_php = False
     in_cmt = False
     level = 0
-
     _kind = None
-    _id = None
 
     for line_index, s in enumerate(lines):
         pos = 0
@@ -89,9 +87,8 @@ def get_headers(lines):
                 level += 1
                 continue
             if token=='}':
-                level -= 1
-                if level < 0:
-                    level = 0
+                if level>0:
+                    level -= 1
                 continue
 
             if token=='class':
@@ -105,4 +102,4 @@ def get_headers(lines):
                 yield line_index, level, token, _kind
             _kind = None
                             
-            print('    '*level+' (lev '+str(level)+') token "'+token+'"')
+            #print('    '*level+' (lev '+str(level)+') token "'+token+'"')
