@@ -129,6 +129,7 @@ def get_headers(filename, lines):
                     'line': line_index,
                     'level': level,
                     'name': token,
+                    'name_x': pos-len(token),
                     'kind': _kind,
                     }
                 _kind = None
