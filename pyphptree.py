@@ -99,10 +99,7 @@ def get_headers(lines):
                 continue
                 
             if _kind:
-                _id = token
-                yield line_index, level, _id, _kind
-            
+                yield line_index, level, token, _kind
             _kind = None
-            _id = None 
                             
-            print('    '*level+' (l='+str(level)+') token "'+token+'"')
+            print('    '*level+' (lev '+str(level)+') token "'+token+'"')
