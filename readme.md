@@ -16,4 +16,5 @@ Fields:
 - kind: kind of header item: "c" for class, "f" for function.
 
 Author: Alexey Torgashin, UVviewsoft.com 
+
 License: MPL 2.0
