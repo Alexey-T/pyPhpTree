@@ -19,13 +19,12 @@ Fields:
 
 Example of output:
 ```
-Headers in: testfiles/c.php
-   (1, 0, 'C1', 'c')
-   (2, 1, 'F1a', 'f')
-   (4, 1, 'F1b', 'f')
-   (21, 0, 'C2', 'c')
-   (22, 1, 'F2a', 'f')
-   (27, 1, 'F2b', 'f')
+   (1, 0, 'Class1', 'c')
+   (2, 1, 'Func1a', 'f')
+   (4, 1, 'Func1b', 'f')
+   (21, 0, 'Class2', 'c')
+   (22, 1, 'Func2a', 'f')
+   (27, 1, 'Func2b', 'f')
 ```   
 
 # About
