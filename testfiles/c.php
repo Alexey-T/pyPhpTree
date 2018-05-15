@@ -9,7 +9,9 @@
         return 'str\'str' + 'str
             str2\'str2
             function Fake1() {}
-            str3'
+            str3' + "str
+            function Fake2() {}
+            str"
       }
     //function Fake() {}
 ?>

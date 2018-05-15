@@ -34,7 +34,7 @@ def get_token(s, pos):
     # special symbols?
     if r+1<len(s):
         sub = s[r:r+2]
-        if sub in ('<?', '?>', '/*', '*/', '//', '==') \
+        if sub in ('<?', '?>', '/*', '*/', '//', '==', '->') \
             or sub.startswith('\\'):
             # '\\' to support backslash escape in strings, must not be bad outside of str
             return (r+2, sub)
@@ -49,10 +49,11 @@ def get_headers(filename, lines):
     (line_index, level, caption, kind)
     '''
 
-    in_php = False
-    in_cmt = False
-    in_str = False
-    level = 0
+    in_php = False # for <?..?> tags
+    in_cmt = False # for /*..*/ comments
+    in_str = False # for single quote
+    in_str2 = False # for double quote
+    level = 0 # increased by {, decreased by }
     _kind = None
 
     for line_index, s in enumerate(lines):
@@ -72,6 +73,11 @@ def get_headers(filename, lines):
             if in_str:
                 if token=="'":
                     in_str = False
+                continue # ignore all until str end
+
+            if in_str2:
+                if token=='"':
+                    in_str2 = False
                 continue # ignore all until str end
 
             # ignore non-PHP parts
@@ -97,6 +103,9 @@ def get_headers(filename, lines):
             # consider strings
             if token=="'":
                 in_str = True
+                continue
+            if token=='"':
+                in_str2 = True
                 continue
 
             # now we have OK php token
