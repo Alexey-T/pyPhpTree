@@ -45,8 +45,7 @@ def get_token(s, pos):
 
 def get_headers(filename, lines):
     '''
-    gets list of tuples for classes/funcs:
-    (line_index, level, caption, kind)
+    gets dicts for class/function declarations
     '''
 
     in_php = False # for <?..?> tags
