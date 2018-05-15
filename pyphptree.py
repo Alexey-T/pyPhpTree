@@ -86,8 +86,10 @@ def get_headers(filename, lines):
 
             # consider comments
             if token=='//':
-                # goto next line
-                break
+                # skip until EOL or until ?>
+                pos = s.find('?>', pos)
+                if pos<0: # until EOL
+                    break
             if token=='/*':
                 in_cmt = True
                 continue

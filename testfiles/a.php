@@ -14,5 +14,8 @@
   }
 ?>
 
+<? echo '' //test line cmt ?>
+<p class="some">
+
 function Z(){} <? function F4(a){} ?>
 function Z2(){}
