@@ -56,7 +56,22 @@ def get_headers(lines):
         pos = 0
         while pos<len(s):
             pos, token = get_token(s, pos)
-            if token==' ': continue
+            if token in ('', ' '):
+                continue
+            if token=='/*':
+                in_cmt = True
+                continue
+            if token=='*/':
+                in_cmt = False
+                continue
+            if token=='<?':
+                in_php = True
+                continue
+            if token=='?>':
+                in_php = False
+                continue
+            if in_cmt:
+                continue
+            if not in_php:
+                continue
             print('token "'+token+'"')
-            
-        
