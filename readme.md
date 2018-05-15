@@ -17,6 +17,17 @@ Fields:
 - caption: name of class/function.
 - kind: kind of item: "c" for class, "f" for function.
 
+Example of output:
+```
+Headers in: testfiles/c.php
+   (1, 0, 'C1', 'c')
+   (2, 1, 'F1a', 'f')
+   (4, 1, 'F1b', 'f')
+   (21, 0, 'C2', 'c')
+   (22, 1, 'F2a', 'f')
+   (27, 1, 'F2b', 'f')
+```   
+
 # About
 
 - Author: Alexey Torgashin, UVviewsoft.com 
