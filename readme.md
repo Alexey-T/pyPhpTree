@@ -4,28 +4,17 @@ Module is a tiny parser of PHP source code, which finds lines with "class"/"func
 
 # API
 
-Function `get_headers(filename, lines)` finds all classes/functions, in given "lines" list, and gets tuples:
+Function `get_headers(filename, lines)` finds all classes/functions, in given "lines" list, and gets dicts:
 
-    (line_index, level, caption, kind)
+    {
+      'line': int,    # 0-based line index in the "lines" list
+      'level': int,   # 0-based level of item. each item of level K+1
+                      # is nested into (nearest higher) item of level K
+      'name': str,    # name of class/function
+      'kind': str,    # "c" for class, "f" for function
+    }
     
-It's generator (yield), so to get list of tuples, use `list(get_headers(...))`.
-  
-Fields:
-
-- line_index: 0-based line index in the "lines" list.
-- level: 0-based level of item. each item of level K+1 is nested into (nearest higher) item of level K.
-- caption: name of class/function.
-- kind: kind of item: "c" for class, "f" for function.
-
-Example of output:
-```
-   (1, 0, 'Class1', 'c')
-   (2, 1, 'Func1a', 'f')
-   (4, 1, 'Func1b', 'f')
-   (21, 0, 'Class2', 'c')
-   (22, 1, 'Func2a', 'f')
-   (27, 1, 'Func2b', 'f')
-```   
+It's generator (yield), so to get list, use `list(get_headers(...))`.
 
 # About
 

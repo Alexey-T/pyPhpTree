@@ -125,7 +125,12 @@ def get_headers(filename, lines):
                 continue
 
             if _kind:
-                yield line_index, level, token, _kind
+                yield {
+                    'line': line_index,
+                    'level': level,
+                    'name': token,
+                    'kind': _kind,
+                    }
                 _kind = None
 
             # debug tokens
