@@ -35,8 +35,8 @@ def get_token(s, pos):
     if r+1<len(s):
         sub = s[r:r+2]
         if sub in ('<?', '?>', '/*', '*/', '//', '==') \
-            # support backslash escape in strings, must not be bad outside of str
             or sub.startswith('\\'):
+            # '\\' to support backslash escape in strings, must not be bad outside of str
             return (r+2, sub)
 
     # some unknown char
@@ -115,6 +115,7 @@ def get_headers(lines):
 
             if _kind:
                 yield line_index, level, token, _kind
-            _kind = None
+                _kind = None
 
+            # debug tokens
             #print('    '*level+' (lev '+str(level)+') token "'+token+'"')
