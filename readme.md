@@ -1,12 +1,12 @@
 # pyPhpTree module
 
-Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? ... ?>` tags (any count of fragments in one file), and outside of `/* ... */` and `// ...` comments, and outside of `'...'` strings (multi-line string supported).
+Module is a tiny parser of PHP source code, which finds lines with "class"/"function" declarations. It reads PHP code only inside `<? ... ?>` tags (any count of fragments in one file), and outside of `/* ... */` and `// ...` comments, and outside of `'...'` strings (multi-line strings supported, escape backslash should work).
 
 Function `get_headers(lines)` finds all classes/functions, in given "lines" list, and gets tuples:
 
     (line_index, level, caption, kind)
     
-It's generator (yield), so to get list of tuples, use `list(get_headers(..))`.
+It's generator (yield), so to get list of tuples, use `list(get_headers(...))`.
   
 Fields:
 
@@ -18,4 +18,4 @@ Fields:
 # About
 
 - Author: Alexey Torgashin, UVviewsoft.com 
-- License: MPL 2.0
+- License: Mozilla Public License 2.0 (MPL-2.0)
