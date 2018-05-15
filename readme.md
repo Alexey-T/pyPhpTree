@@ -6,7 +6,7 @@ Function
 
     def get_headers(lines)
   
-finds all classes/functions in PHP source code ("lines" list), and gives list of tuples:
+finds all classes/functions, in given "lines" list, and gets list of tuples:
 
     (line_index, level, caption, kind)
   
