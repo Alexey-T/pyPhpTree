@@ -2,8 +2,11 @@
 # Author: Alexey Torgashin, UVviewsoft.com
 # License: MPL 2.0
 
+import string
+CHARS = string.ascii_letters + string.digits + '_$'
+
 def is_wordchar(ch):
-    return ch.isdigit() or ch.isalpha() or ch in '_$'
+    return ch in CHARS
 
 def get_token(s, pos):
     '''
