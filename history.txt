@@ -1,7 +1,7 @@
 
 2018.05.16
-* changed result to dicts
-* added to result field "name_x"
+* change: result is now dicts
++ add: result field "col"
 
 2018.05.15
 initial version
