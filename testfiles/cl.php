@@ -14,6 +14,7 @@
             str"
       }
     //function Fake() {}
+    function F1c(){}
 ?>
 
 <?
