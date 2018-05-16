@@ -12,6 +12,7 @@ Function `get_headers(filename, lines)` finds all classes/functions, in given "l
       'level': int,     # 0-based level of item. each item of level K+1
                         # is nested into (nearest higher) item of level K
       'name': str,      # name of class/function
+                        # empty str for anonymous funcs
       'kind': str,      # "c" for class, "f" for function
     }
     

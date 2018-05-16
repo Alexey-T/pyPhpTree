@@ -1,11 +1,6 @@
 import os
 import pyphptree
 
-dir = os.path.dirname(__file__)
-fn1 = os.path.join(dir, 'testfiles', 'a.php')
-fn2 = os.path.join(dir, 'testfiles', 'c.php')
-fn3 = os.path.join(dir, 'testfiles', 'd.php')
-
 def test_file(fn):
     with open(fn, encoding='utf8') as f:
         lines = f.read().splitlines()
@@ -13,6 +8,9 @@ def test_file(fn):
         for item in pyphptree.get_headers(fn, lines):
             print('  ', item)
 
-test_file(fn1)
-test_file(fn2)
-test_file(fn3)
+
+dir = os.path.join(os.path.dirname(__file__), 'testfiles')
+v = sorted(os.listdir(dir))
+v = [os.path.join(dir, s) for s in v if s.endswith('.php')]
+for fn in v:
+    test_file(fn)

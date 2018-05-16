@@ -183,7 +183,7 @@ def get_headers(filename, lines):
                 yield {
                     'line': line_index,
                     'level': level,
-                    'name': token,
+                    'name': token if is_wordtoken(token) else '',
                     'col': pos-len(token),
                     'kind': _kind,
                     }
