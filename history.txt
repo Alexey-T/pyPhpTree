@@ -3,6 +3,8 @@
 * change: result is now dicts
 + add: result field "col"
 + add: support PHP heredoc/herenow
++ add: support unnamed (anonymous) functions
++ add: support namespace/trait
 
 2018.05.15
 initial version

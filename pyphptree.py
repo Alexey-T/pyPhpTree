@@ -19,6 +19,13 @@ TOKENS_LEN3 = (
     '===', '!==', '<<=', '>>=',
     )
 
+KEYWORDS_NEED = (
+    'function',
+    'class',
+    'namespace',
+    'trait',
+    )
+
 def is_wordchar(ch):
     return ch in CHARS
 
@@ -172,11 +179,8 @@ def get_headers(filename, lines):
             # debug tokens
             #print('    '*level+' (lev '+str(level)+') token "'+token+'"')
 
-            if token=='class':
-                _kind = 'c'
-                continue
-            if token=='function':
-                _kind = 'f'
+            if token in KEYWORDS_NEED:
+                _kind = token
                 continue
 
             if _kind:

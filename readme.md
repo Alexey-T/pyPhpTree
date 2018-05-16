@@ -13,7 +13,7 @@ Function `get_headers(filename, lines)` finds all classes/functions, in given "l
                         # is nested into (nearest higher) item of level K
       'name': str,      # name of class/function
                         # empty str for anonymous funcs
-      'kind': str,      # "c" for class, "f" for function
+      'kind': str,      # "class", "function", "namespace", "trait"
     }
     
 It's generator (yield), so to get list, use `list(get_headers(...))`.
