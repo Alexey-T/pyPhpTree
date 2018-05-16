@@ -23,6 +23,12 @@ def is_wordchar(ch):
     return ch in CHARS
 
 
+def is_wordtoken(s):
+    if not s:
+        return False
+    return is_wordchar(s[0])
+
+
 def get_token(s, pos):
     '''
     gets token info (pos_after_token, str_token)
@@ -143,7 +149,7 @@ def get_headers(filename, lines):
                     'line': line_index,
                     'level': level,
                     'name': token,
-                    'name_x': pos-len(token),
+                    'col': pos-len(token),
                     'kind': _kind,
                     }
                 _kind = None
