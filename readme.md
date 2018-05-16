@@ -4,15 +4,15 @@ Module for Python 3. Tiny parser of PHP source code, which finds lines with clas
 
 # API
 
-Function `get_headers(filename, lines)` finds all classes/functions, in given "lines" list, and gets dicts:
+Function `get_headers(filename, lines)` finds all entities, in given "lines" list, and gets dicts:
 
     {
       'line': int,      # 0-based line index, where name found
       'col': int,       # 0-based position in line, where name found
       'level': int,     # 0-based level of item. each item of level K+1
-                        # is nested into (nearest higher) item of level K
-      'name': str,      # name of class/function
-                        # empty str for anonymous funcs
+                        # is nested into (nearest upper) item of level K
+      'name': str,      # name of entity
+                        # empty for anonymous funcs
       'kind': str,      # "class", "function", "namespace", "trait"
     }
     
