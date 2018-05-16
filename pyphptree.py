@@ -36,7 +36,7 @@ def is_wordtoken(s):
     return is_wordchar(s[0])
 
 
-def get_token(s, pos):
+def get_token(s, pos, in_str):
     '''
     gets token info (pos_after_token, str_token)
     '''
@@ -90,7 +90,7 @@ def get_headers(filename, lines):
     for line_index, s in enumerate(lines):
         pos = 0
         while pos<len(s):
-            pos, token = get_token(s, pos)
+            pos, token = get_token(s, pos, in_str)
 
             # skip spaces/tabs
             if token in ('', ' '):
@@ -114,7 +114,7 @@ def get_headers(filename, lines):
             if in_doc:
                 # end must be at line start
                 if pos-len(token)==0 and token==in_doc_name:
-                    pos, token = get_token(s, pos)
+                    pos, token = get_token(s, pos, in_str)
                     if token==';':
                         in_doc = False
                         in_doc_name = ''
@@ -151,9 +151,9 @@ def get_headers(filename, lines):
             # consider heredoc
             if token=='<<<':
                 # analyze next 3 tokens
-                pos, t1 = get_token(s, pos)
-                pos, t2 = get_token(s, pos)
-                pos, t3 = get_token(s, pos)
+                pos, t1 = get_token(s, pos, in_str)
+                pos, t2 = get_token(s, pos, in_str)
+                pos, t3 = get_token(s, pos, in_str)
 
                 if is_wordtoken(t1):
                     in_doc = True
