@@ -7,8 +7,8 @@
 import string
 CHARS = string.ascii_letters + string.digits + '_$'
 
-DBG_TOKEN = False
-DBG_LEVEL = False
+DBG_TOKEN = 0
+DBG_LEVEL = 0
 
 TOKENS_LEN2 = (
     '<?', '?>', '/*', '*/', '//', '::',
@@ -39,7 +39,7 @@ def is_wordtoken(s):
     return is_wordchar(s[0])
 
 
-def get_token(s, pos, in_s1, in_s2):
+def get_token(s, pos, in_s1, in_s2, in_cmt):
     '''
     gets token info (pos_after_token, str_token)
     '''
@@ -48,7 +48,7 @@ def get_token(s, pos, in_s1, in_s2):
         return (r, '')
     ch = s[r]
 
-    # parse inside strings
+    # inside strings - find only end of string
     if in_s1:
         while r<len(s):
             if s[r]=="'":
@@ -67,6 +67,14 @@ def get_token(s, pos, in_s1, in_s2):
                 r += 2
             else:
                 r += 1
+        return (r, '##')
+
+    # inside comment - find only comment end
+    if in_cmt:
+        while r<len(s):
+            if s[r:r+2]=='*/':
+                return (r+2, '*/')
+            r += 1
         return (r, '##')
 
     # space?
@@ -114,7 +122,7 @@ def get_headers(filename, lines):
     for line_index, s in enumerate(lines):
         pos = 0
         while pos<len(s):
-            pos, token = get_token(s, pos, in_str, in_str2)
+            pos, token = get_token(s, pos, in_str, in_str2, in_cmt)
 
             # skip spaces/tabs
             if token in ('', ' '):
@@ -141,7 +149,7 @@ def get_headers(filename, lines):
             if in_doc:
                 # end must be at line start
                 if pos-len(token)==0 and token==in_doc_name:
-                    pos, token = get_token(s, pos, in_str, in_str2)
+                    pos, token = get_token(s, pos, in_str, in_str2, in_cmt)
                     if token==';':
                         in_doc = False
                         in_doc_name = ''
@@ -178,9 +186,9 @@ def get_headers(filename, lines):
             # consider heredoc
             if token=='<<<':
                 # analyze next 3 tokens
-                pos, t1 = get_token(s, pos, in_str, in_str2)
-                pos, t2 = get_token(s, pos, in_str, in_str2)
-                pos, t3 = get_token(s, pos, in_str, in_str2)
+                pos, t1 = get_token(s, pos, in_str, in_str2, in_cmt)
+                pos, t2 = get_token(s, pos, in_str, in_str2, in_cmt)
+                pos, t3 = get_token(s, pos, in_str, in_str2, in_cmt)
 
                 if is_wordtoken(t1):
                     in_doc = True

@@ -1,8 +1,12 @@
 <?
   function F1(a,b){}
   //function Fake() {}
-  function /*t*/F2
-    /*t*/() {}
+  function /*
+    t
+    */F2
+    /*
+    t
+    */() {}
 ?>
 
 <?
