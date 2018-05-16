@@ -2,6 +2,7 @@
 2018.05.16
 * change: result is now dicts
 + add: result field "col"
++ add: support PHP heredoc/herenow
 
 2018.05.15
 initial version

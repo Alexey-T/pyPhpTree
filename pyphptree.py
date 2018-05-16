@@ -73,6 +73,9 @@ def get_headers(filename, lines):
     in_cmt = False # for /*..*/ comments
     in_str = False # for single quote
     in_str2 = False # for double quote
+    in_doc = False # for heredoc
+    in_doc_name = '' # name of heredoc
+
     level = 0 # increased by {, decreased by }
     _kind = None
 
@@ -99,6 +102,15 @@ def get_headers(filename, lines):
                 if token=='"':
                     in_str2 = False
                 continue # ignore all until str end
+
+            if in_doc:
+                # end must be at line start
+                if pos-len(token)==0 and token==in_doc_name:
+                    pos, token = get_token(s, pos)
+                    if token==';':
+                        in_doc = False
+                        in_doc_name = ''
+                continue # ignore all until heredoc end
 
             # ignore non-PHP parts
             if token=='<?':
@@ -128,6 +140,26 @@ def get_headers(filename, lines):
                 in_str2 = True
                 continue
 
+            # consider heredoc
+            if token=='<<<':
+                # analyze next 3 tokens
+                pos, t1 = get_token(s, pos)
+                pos, t2 = get_token(s, pos)
+                pos, t3 = get_token(s, pos)
+
+                if is_wordtoken(t1):
+                    in_doc = True
+                    in_doc_name = t1
+                    continue
+                if t1=="'" and is_wordtoken(t2) and t3=="'":
+                    in_doc = True
+                    in_doc_name = t2
+                    continue
+                if t1=='"' and is_wordtoken(t2) and t3=='"':
+                    in_doc = True
+                    in_doc_name = t2
+                    continue
+
             # now we have OK php token
             if token=='{':
                 level += 1
@@ -136,6 +168,9 @@ def get_headers(filename, lines):
                 if level>0:
                     level -= 1
                 continue
+
+            # debug tokens
+            #print('    '*level+' (lev '+str(level)+') token "'+token+'"')
 
             if token=='class':
                 _kind = 'c'
@@ -154,5 +189,3 @@ def get_headers(filename, lines):
                     }
                 _kind = None
 
-            # debug tokens
-            #print('    '*level+' (lev '+str(level)+') token "'+token+'"')
