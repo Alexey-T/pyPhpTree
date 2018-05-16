@@ -119,7 +119,7 @@ def get_headers(filename, lines):
             # skip spaces/tabs
             if token in ('', ' '):
                 continue
-            
+
             if DBG_TOKEN:
                 print('get token: "'+token+'"')
 
