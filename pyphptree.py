@@ -51,7 +51,8 @@ def get_token(s, pos):
 
     # word char?
     if is_wordchar(ch):
-        while r<len(s) and is_wordchar(s[r]):
+        # \ char can be in the middle of namespace name
+        while r<len(s) and (is_wordchar(s[r]) or s[r]=='\\'):
             r += 1
         return (r, s[pos:r])
 
@@ -169,9 +170,11 @@ def get_headers(filename, lines):
 
             # now we have OK php token
             if token=='{':
+                _kind = None
                 level += 1
                 continue
             if token=='}':
+                _kind = None
                 if level>0:
                     level -= 1
                 continue
