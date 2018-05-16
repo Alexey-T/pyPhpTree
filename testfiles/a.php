@@ -1,21 +1,16 @@
 <?
-  function F1(a,b){
-  }
+  function F1(a,b){}
   //function Fake() {}
   function /*t*/F2
-    /*t*/
-    (/*t*/)/*t*/
-    {
-    }
+    /*t*/() {}
 ?>
 
 <?
-  function F3(a){
-  }
+  function F3(a){}
 ?>
 
 <? echo '' //test line cmt ?>
 <p class="some">
 
-function Z(){} <? function F4(a){} ?>
-function Z2(){}
+function FakeZ1(){} <? function F4(a){} ?>
+function FakeZ2(){}

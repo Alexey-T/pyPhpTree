@@ -2,9 +2,9 @@
   class C1 {
     function F1a(a,b){
       }
-    function /*t*/F1b
-      /*t*/
-      (/*t*/)/*t*/
+    function /*t
+      cmt*/F1b
+      /*t*/()/*t*/
       {
         return 'str\'str' + 'str
             str2\'str2
@@ -24,7 +24,7 @@
     }
 ?>
 
-function Z(){} <?
+function FakeZ(){} <?
     function F2b(){} 
     }
   } /*end if C2*/
