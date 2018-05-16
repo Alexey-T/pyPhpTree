@@ -88,7 +88,7 @@ def get_token(s, pos, in_s1, in_s2, in_cmt):
             r += 1
         return (r, s[pos:r])
 
-    # special operators?
+    # special operators
     if r+2<len(s):
         sub = s[r:r+3]
         if sub in TOKENS_LEN3:
@@ -96,8 +96,7 @@ def get_token(s, pos, in_s1, in_s2, in_cmt):
 
     if r+1<len(s):
         sub = s[r:r+2]
-        if sub in TOKENS_LEN2 or sub.startswith('\\'):
-            # '\\' to support backslash escape in strings, must not be bad outside of str
+        if sub in TOKENS_LEN2:
             return (r+2, sub)
 
     # some unknown char
