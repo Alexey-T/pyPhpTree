@@ -7,6 +7,17 @@
 import string
 CHARS = string.ascii_letters + string.digits + '_$'
 
+TOKENS_LEN2 = (
+    '<?', '?>', '/*', '*/', '//', '::',
+    '==', '!=', '->', '=>', '<=', '>=',
+    '--', '++', '||', '&&',
+    '+=', '-=', '*=', '/=', '.=', '%=', '&=', '|=', '^=',
+    )
+
+TOKENS_LEN3 = (
+    '<<<', '>>>',
+    '===', '!==', '<<=', '>>=',
+    )
 
 def is_wordchar(ch):
     return ch in CHARS
@@ -31,11 +42,15 @@ def get_token(s, pos):
             r += 1
         return (r, s[pos:r])
 
-    # special symbols?
+    # special operators?
+    if r+2<len(s):
+        sub = s[r:r+3]
+        if sub in TOKENS_LEN3:
+            return (r+3, sub)
+
     if r+1<len(s):
         sub = s[r:r+2]
-        if sub in ('<?', '?>', '/*', '*/', '//', '==', '->') \
-            or sub.startswith('\\'):
+        if sub in TOKENS_LEN2 or sub.startswith('\\'):
             # '\\' to support backslash escape in strings, must not be bad outside of str
             return (r+2, sub)
 
