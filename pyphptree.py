@@ -29,6 +29,13 @@ KEYWORDS_NEED = (
     'trait',
     )
 
+ST_NONE = 0 # at usual tokens
+ST_STR1 = 1 # inside 'string'
+ST_STR2 = 2 # inside "string"
+ST_CMT = 3  # inside /* comment */
+ST_DOC = 4  # inside <<<TT heredoc TT;
+
+
 def is_wordchar(ch):
     return ch in CHARS
 
@@ -39,7 +46,7 @@ def is_wordtoken(s):
     return is_wordchar(s[0])
 
 
-def get_token(s, pos, in_s1, in_s2, in_cmt):
+def get_token(s, pos, state):
     '''
     gets token info (pos_after_token, str_token)
     '''
@@ -49,7 +56,7 @@ def get_token(s, pos, in_s1, in_s2, in_cmt):
     ch = s[r]
 
     # inside strings - find only end of string
-    if in_s1:
+    if state==ST_STR1:
         while r<len(s):
             if s[r]=="'":
                 return (r+1, "'")
@@ -59,7 +66,7 @@ def get_token(s, pos, in_s1, in_s2, in_cmt):
                 r += 1
         return (r, '##')
 
-    if in_s2:
+    if state==ST_STR2:
         while r<len(s):
             if s[r]=='"':
                 return (r+1, '"')
@@ -70,7 +77,7 @@ def get_token(s, pos, in_s1, in_s2, in_cmt):
         return (r, '##')
 
     # inside comment - find only comment end
-    if in_cmt:
+    if state==ST_CMT:
         while r<len(s):
             if s[r:r+2]=='*/':
                 return (r+2, '*/')
@@ -109,10 +116,7 @@ def get_headers(filename, lines):
     '''
 
     in_php = False # for <?..?> tags
-    in_cmt = False # for /*..*/ comments
-    in_str = False # for single quote
-    in_str2 = False # for double quote
-    in_doc = False # for heredoc
+    in_state = ST_NONE
     in_doc_name = '' # name of heredoc
 
     level = 0 # increased by {, decreased by }
@@ -121,7 +125,7 @@ def get_headers(filename, lines):
     for line_index, s in enumerate(lines):
         pos = 0
         while pos<len(s):
-            pos, token = get_token(s, pos, in_str, in_str2, in_cmt)
+            pos, token = get_token(s, pos, in_state)
 
             # skip spaces/tabs
             if token in ('', ' '):
@@ -130,27 +134,27 @@ def get_headers(filename, lines):
             if DBG_TOKEN:
                 print('get token: "'+token+'"')
 
-            if in_cmt:
+            if in_state==ST_CMT:
                 if token=='*/':
-                    in_cmt = False
+                    in_state = ST_NONE
                 continue # ignore all until cmt end
 
-            if in_str:
+            if in_state==ST_STR1:
                 if token=="'":
-                    in_str = False
+                    in_state = ST_NONE
                 continue # ignore all until str end
 
-            if in_str2:
+            if in_state==ST_STR2:
                 if token=='"':
-                    in_str2 = False
+                    in_state = ST_NONE
                 continue # ignore all until str end
 
-            if in_doc:
+            if in_state==ST_DOC:
                 # end must be at line start
                 if pos-len(token)==0 and token==in_doc_name:
-                    pos, token = get_token(s, pos, in_str, in_str2, in_cmt)
+                    pos, token = get_token(s, pos, in_state)
                     if token==';':
-                        in_doc = False
+                        in_state = ST_NONE
                         in_doc_name = ''
                 continue # ignore all until heredoc end
 
@@ -171,34 +175,34 @@ def get_headers(filename, lines):
                 if pos<0: # until EOL
                     break
             if token=='/*':
-                in_cmt = True
+                in_state = ST_CMT
                 continue
 
             # consider strings
             if token=="'":
-                in_str = True
+                in_state = ST_STR1
                 continue
             if token=='"':
-                in_str2 = True
+                in_state = ST_STR2
                 continue
 
             # consider heredoc
             if token=='<<<':
                 # analyze next 3 tokens
-                pos, t1 = get_token(s, pos, in_str, in_str2, in_cmt)
-                pos, t2 = get_token(s, pos, in_str, in_str2, in_cmt)
-                pos, t3 = get_token(s, pos, in_str, in_str2, in_cmt)
+                pos, t1 = get_token(s, pos, in_state)
+                pos, t2 = get_token(s, pos, in_state)
+                pos, t3 = get_token(s, pos, in_state)
 
                 if is_wordtoken(t1):
-                    in_doc = True
+                    in_state = ST_DOC
                     in_doc_name = t1
                     continue
                 if t1=="'" and is_wordtoken(t2) and t3=="'":
-                    in_doc = True
+                    in_state = ST_DOC
                     in_doc_name = t2
                     continue
                 if t1=='"' and is_wordtoken(t2) and t3=='"':
-                    in_doc = True
+                    in_state = ST_DOC
                     in_doc_name = t2
                     continue
 
