@@ -1,4 +1,7 @@
 
+2018.05.17
++ refactored
+
 2018.05.16
 * change: result is now dicts
 + add: result field "col"
