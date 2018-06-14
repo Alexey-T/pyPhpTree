@@ -1,2 +1,13 @@
+White ~/.pypirc as:
+
+[distutils]
+index-servers = pypi
+
+[pypi]
+repository :  https://upload.pypi.org/legacy/
+username : <>
+password : <>
+
+Do:
 python3 setup.py sdist
 twine upload dist/*

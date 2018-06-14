@@ -1,21 +1,23 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='pyphptree',
-    version='1.0.0',
+    version='1.0.2',
     packages=find_packages(),
     long_description=long_description,
-    long_description_content_type="text/markdown",
     author='Alexey Torgashin',
     author_email='support@uvviewsoft.com',
-    url='http://uvviewsoft.com/',
+    url='https://github.com/Alexey-T/pyPhpTree',
+    license='Mozilla Public License 2.0 (MPL 2.0)',
     classifiers=(
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3",
-        "Programming Language :: PHP",
+        "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Operating System :: OS Independent",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ),
 )
