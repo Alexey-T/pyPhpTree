@@ -1,4 +1,4 @@
-White ~/.pypirc as:
+Write ~/.pypirc as:
 
 [distutils]
 index-servers = pypi
