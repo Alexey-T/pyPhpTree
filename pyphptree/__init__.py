@@ -29,6 +29,14 @@ KEYWORDS_NEED = (
     'trait',
     )
 
+KEYWORDS_LOOP = (
+    'if',
+    'for',
+    'foreach',
+    'do',
+    'switch',
+    )
+
 ST_NONE = 0 # at usual tokens
 ST_STR1 = 1 # inside 'string'
 ST_STR2 = 2 # inside "string"
@@ -120,6 +128,7 @@ def get_headers(filename, lines):
     in_doc_name = '' # name of heredoc
 
     level = 0 # increased by {, decreased by }
+    level_loop = 0 # increased for 'for'/'if'
     _kind = None
 
     for line_index, s in enumerate(lines):
@@ -210,24 +219,34 @@ def get_headers(filename, lines):
             if token=='{':
                 _kind = None
                 level += 1
+                if is_loop:
+                    is_loop = False
+                    level_loop += 1
                 continue
             if token=='}':
                 _kind = None
                 if level>0:
                     level -= 1
+                if level_loop>0:
+                    level_loop -= 1
                 continue
 
             if DBG_LEVEL:
-                print('    '*level+' (lev '+str(level)+') token "'+token+'"')
+                print('    '*level+' (level '+str(level)+') token "'+token+'"')
+
+            if token in KEYWORDS_LOOP:
+                is_loop = True
+                continue
 
             if token in KEYWORDS_NEED:
                 _kind = token
+                is_loop = False
                 continue
 
             if _kind:
                 yield {
                     'line': line_index,
-                    'level': level,
+                    'level': level - level_loop,
                     'name': token if is_wordtoken(token) else '',
                     'col': pos-len(token),
                     'kind': _kind,
